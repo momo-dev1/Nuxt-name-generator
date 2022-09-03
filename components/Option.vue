@@ -6,6 +6,7 @@
         v-for="(value, index) in option.buttons"
         :key="value"
         class="option"
+        :class="options[value] === value && 'option-active '"
       >
         {{ value }}
       </button>
@@ -30,6 +31,7 @@ interface OptionProps {
   };
 }
 
+const props = defineProps<OptionProps>();
 </script>
 
 <style scoped>
