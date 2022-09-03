@@ -6,7 +6,8 @@
         v-for="(value, index) in option.buttons"
         :key="value"
         class="option"
-        :class="options[value] === value && 'option-active '"
+        :class="computeButtonClasses(value, index)"
+        @click="options[option.category] = value"
       >
         {{ value }}
       </button>
@@ -32,6 +33,17 @@ interface OptionProps {
 }
 
 const props = defineProps<OptionProps>();
+
+const computeButtonClasses = (value, index) => {
+  const classNames = [];
+  if (props.options[props.option.category] === value) {
+    classNames.push("option-active");
+  }
+  if (index === 0) classNames.push("option-left");
+  if (index === props.option.buttons.length - 1)
+    classNames.push("option-right");
+  return classNames.join(" ");
+};
 </script>
 
 <style scoped>
@@ -48,6 +60,11 @@ const props = defineProps<OptionProps>();
   color: rgb(27, 60, 138);
   cursor: pointer;
   font-weight: 200;
+}
+
+.option-buttons {
+  display: flex;
+  justify-content: center;
 }
 .option-left {
   border-radius: 1rem 0 0 1rem;

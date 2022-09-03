@@ -9,14 +9,15 @@
         :option="option"
         :options="options"
       />
-      <button class="primary">Find Names</button>
+      <button @click="computeSelectedNames" class="primary">Find Names</button>
     </div>
     <div class="cards-container">
-      <CardName
+      <Name
         v-for="(name, index) in selectedNames"
         :key="name"
         :name="name"
         :index="index"
+        @remove="() => removeName(index)"
       />
     </div>
   </div>
@@ -42,7 +43,7 @@ const computeSelectedNames = () => {
     .filter(({ gender }) => gender === options.gender)
     .filter(({ popularity }) => popularity === options.popularity)
     .filter(({ length }) => {
-      if (length === Length.ALL) return true;
+      if (options.length === Length.ALL) return true;
       else return length === options.length;
     });
 
@@ -51,6 +52,11 @@ const computeSelectedNames = () => {
 
 const selectedNames = ref<string[]>([]);
 
+const removeName = (index: number) => {
+  const filterNames = [...selectedNames.value];
+  filterNames.splice(index, 1);
+  selectedNames.value = filterNames;
+};
 const optionsArray = [
   {
     title: "1) choose a gender ",
